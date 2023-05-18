@@ -52,6 +52,12 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Comment> commentList=new ArrayList<>();
 
+
+    //게시글 좋아요
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<PostHeart> postHeartList=new ArrayList<>();
+
+
     @Builder
     public Post(Long postId,Board board,Member writer,boolean writerShow,String content){
         this.postId=postId;

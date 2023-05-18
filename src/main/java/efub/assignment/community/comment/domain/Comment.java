@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //객체를 테이블(엔티티)와 매핑
 @Getter
@@ -29,6 +31,9 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",nullable = false,updatable = false)
     private Member writer;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL,orphanRemoval = true)
+    List<CommentHeart> commentHeartList=new ArrayList<>();
 
     @Builder
     public Comment(String content,Post post,Member writer){

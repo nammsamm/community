@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -55,7 +56,7 @@ public class CommentService {
     }
 
     // 댓글 수정
-    public Comment modifyComment(Long commentId, CommentModifyRequestDto requestDto){
+    public Comment modifyComment(Long commentId, @Valid CommentModifyRequestDto requestDto){
         Comment comment= commentRepository.findByCommentIdAndWriter_MemberId(commentId,requestDto.getMemberId())
                 .orElseThrow(()-> new IllegalArgumentException("잘못된 접근입니다."));
         comment.updateComment(requestDto);
@@ -63,6 +64,10 @@ public class CommentService {
 
     }
 
-
+    //댓글 삭제
+    public void deleteComment(Long commmentId){
+        Comment comment=findCommentById(commmentId);
+        commentRepository.delete(comment);
+    }
 
 }
