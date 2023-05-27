@@ -5,6 +5,7 @@ import efub.assignment.community.comment.dto.CommentModifyRequestDto;
 import efub.assignment.community.comment.dto.CommentRequestDto;
 import efub.assignment.community.comment.dto.CommentResponseDto;
 import efub.assignment.community.comment.service.CommentHeartService;
+import efub.assignment.community.comment.service.CommentNotificationService;
 import efub.assignment.community.comment.service.CommentService;
 import efub.assignment.community.member.dto.MemberInfoRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor    // 생성자를 통한 의존관계 주입
-@RequestMapping("/comments")
+@RequestMapping("/comments/{commentId}")
 public class CommentController {
     private final CommentService commentService;    // 의존관계: CommentController -> CommentService
     private final CommentHeartService commentHeartService;
+
+    private final CommentNotificationService commentNotificationService;
 
     //여긴 따로 작성하기
     @PutMapping
@@ -37,8 +40,6 @@ public class CommentController {
     }
 
 
-
-
     //댓글에 좋아요 생성
     @PostMapping("/hearts")
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -53,5 +54,15 @@ public class CommentController {
     public String deleteCommentHeart(@PathVariable final Long commentId, @RequestParam final  Long memberId){
         commentHeartService.delete(commentId,memberId);
         return "좋아요가 취소되었습니다.";
+    }
+
+    // 댓글 생성 알림
+    @PostMapping("/notifications")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public String notifyCommentCreated(@PathVariable Long commentId){
+        commentNotificationService.create(commentId);
+        Comment comment=commentService.findCommentById(commentId);
+        return comment.getPost().getBoard().getBoardName()+", 새로운 댓글이 달렸어요! :"+comment.getContent()+" 시간: "+comment.getCreatedDate();
+
     }
 }

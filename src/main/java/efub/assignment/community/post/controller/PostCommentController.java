@@ -3,6 +3,7 @@ package efub.assignment.community.post.controller;
 import efub.assignment.community.comment.domain.Comment;
 import efub.assignment.community.comment.dto.CommentRequestDto;
 import efub.assignment.community.comment.dto.CommentResponseDto;
+import efub.assignment.community.comment.service.CommentNotificationService;
 import efub.assignment.community.comment.service.CommentService;
 import efub.assignment.community.post.dto.PostCommentsResponseDto;
 import efub.assignment.community.post.dto.PostCommentsResponseDto;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/posts/{postId}/comments")
 public class PostCommentController {
     private final CommentService commentService; // 의존관계 : PostCommentController -> CommentService
+    private final CommentNotificationService commentNotificationService;
 
     //특정 게시글의 댓글 생성
     @PostMapping
@@ -26,6 +28,10 @@ public class PostCommentController {
     public CommentResponseDto createPostComment(@PathVariable Long postId , @RequestBody @Valid CommentRequestDto requestDto){
         Long commentId=commentService.createComment(postId,requestDto);
         Comment comment = commentService.findCommentById(commentId);
+
+        //댓글 생성 알림..?
+        commentNotificationService.create(commentId);
+
         return CommentResponseDto.of(comment);
     }
 
