@@ -43,7 +43,7 @@ public class Post extends BaseTimeEntity {
     @Column
     private boolean writerShow;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT" , nullable = false)
     private String content;
 
     // mappedBy : 연관 관계의 주인(Owner)
@@ -59,8 +59,7 @@ public class Post extends BaseTimeEntity {
 
 
     @Builder
-    public Post(Long postId,Board board,Member writer,boolean writerShow,String content){
-        this.postId=postId;
+    public Post(Board board,Member writer,boolean writerShow,String content){
         this.board=board;
         this.writer=writer;
         this.writerShow=writerShow;

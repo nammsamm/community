@@ -30,23 +30,22 @@ public class Board extends BaseTimeEntity {
     private String notice;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id" , nullable = false)
     private Member boardOwner;
 
-    //일단 Enum은 제외하고 한다..
 
     @Builder // 객체를 생성하는 빌더 패턴.
-    public Board(Long boardId,String boardName,String intro,String notice,Member boardOwner){
-        this.boardId=boardId;
+    public Board(String boardName,String intro,String notice,Member boardOwner){
+        //this.boardId=boardId;
         this.boardName=boardName;
         this.intro=intro;
         this.notice=notice;
         this.boardOwner=boardOwner;
     }
 
+
     public void updateBoard(Member boardOwner) {
         this.boardOwner=boardOwner;
     }
-
 
 }

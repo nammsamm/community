@@ -19,4 +19,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     // 댓글 조회
     Optional<Comment> findByCommentIdAndWriter_MemberId(Long commentId,Long memberId);
 
+    Comment findCommentByCommentId(Long commentId);
+
 }

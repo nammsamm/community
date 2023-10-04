@@ -40,9 +40,10 @@ public class Member extends BaseTimeEntity {
     private MemberStatus status;
 
     @Builder // 객체를 생성하는 빌더 패턴.
-    public Member(Long memberId,String email,String password,String nickname,Integer studentId,
+    public Member(//Long memberId,
+                  String email,String password,String nickname,Integer studentId,
                   String university){
-        this.memberId=memberId;
+        //this.memberId=memberId;
         this.email=email;
         this.encodedPassword=password;
         this.nickname=nickname;
@@ -51,12 +52,17 @@ public class Member extends BaseTimeEntity {
         this.status=REGISTERED;
     }
 
+
     public void updateMember(String email, String password,String nickname,String university,Integer studentId){
         this.email=email;
         this.encodedPassword=password;
         this.nickname=nickname;
         this.nickname=nickname;
         this.studentId=studentId;
+    }
+
+    public void updateNickName(String nickname){
+        this.nickname = nickname;
     }
 
     public void withdrawMember(){
